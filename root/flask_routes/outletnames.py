@@ -25,7 +25,7 @@ def outlets():
         if not token_auth(token):
             data = {"error":"Invalid token."}
             return data,400
-        get_outlet_sql =f"""select distinct Outlet, Company_name, address from outetNames"""
+        get_outlet_sql =f"""select distinct Outlet, Company_name, address, loyalty_percent from outetNames"""
         cursor.execute(get_outlet_sql)
         result = cursor.fetchall()
         if result == []:
@@ -37,7 +37,7 @@ def outlets():
             json_data.append(dict(zip(row_headers,res)))
         response_json = []
         for i in json_data:
-            outlet_json ={"name":i["Outlet"],"value":i["Outlet"], "company": i["Company_name"], "address": i["address"]}
+            outlet_json ={"name":i["Outlet"],"value":i["Outlet"], "company": i["Company_name"], "address": i["address"], "loyalty_percent": float(i["loyalty_percent"])}
             response_json.append(outlet_json)
         mydb.close()
         return response_json,200
